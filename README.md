@@ -91,8 +91,6 @@ This will:
 
 ## Notes
 
-- The Lennard-Jones simulation uses **reduced units**:  
-  **T = 300 K**, **σ = 1**, **ε = 1**.
 - Periodic boundary conditions are applied during simulation, but the initial configuration does not enforce PBC.
 - The single-threaded version (`montecarlo_lennard_jones_gas_single_thread.pyx`) is provided for platforms lacking OpenMP support.
 
