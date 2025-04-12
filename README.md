@@ -1,8 +1,6 @@
-# MonteCarlo-1.0
-
----
-
 # Monte Carlo Lennard-Jones Gas Simulation
+
+This is a work in progress.
 
 This repository contains a simple Monte Carlo simulation framework for modeling an ideal gas and a Lennard-Jones gas in a cubic box using periodic boundary conditions. The code is designed for educational and research purposes in statistical mechanics and molecular simulation.
 
@@ -10,7 +8,7 @@ This repository contains a simple Monte Carlo simulation framework for modeling 
 
 - Generate a cubic box of non-overlapping particles
 - Simulate an ideal gas or a Lennard-Jones gas using the Metropolis algorithm
-- Use OpenMP for parallel computation of pairwise interactions (Lennard-Jones)
+- OpenMP-enabled parallel computation of pairwise interactions
 - Output pressure over time and trajectory files in PDB format
 - Visualize pressure as a function of simulation steps
 
@@ -18,12 +16,23 @@ This repository contains a simple Monte Carlo simulation framework for modeling 
 
 ## Repository Structure
 
-- `Main.py`: Main driver script to run the simulation and generate output.
-- `generate_box.pyx`: Cython module to generate initial non-overlapping coordinates in a cubic box.
-- `montecarlo_lennard_jones_gas_parallel.pyx`: Cython+OpenMP implementation of the Lennard-Jones Monte Carlo simulation.
-- `montecarlo_ideal_gas.py`: (Optional) Module for simulating an ideal gas (not used by default).
-- `traj1.pdb`: PDB trajectory output (written during execution).
-- `test2.pdb`: Optional placeholder for static structure output (commented out).
+```
+project/
+│
+├── Main.py
+├── Makefile
+│
+├── generate_box.pyx
+├── montecarlo_lennard_jones_gas_parallel.pyx
+├── montecarlo_lennard_jones_gas_single_thread.pyx
+│
+├── setup_openmp_intel.py
+├── setup_openmp_arm.py
+├── setup_single_thread.py
+│
+├── traj1.pdb
+└── test2.pdb (optional)
+```
 
 ---
 
@@ -36,15 +45,23 @@ This repository contains a simple Monte Carlo simulation framework for modeling 
 - NumPy
 - Matplotlib
 - Tqdm
-- OpenMP-enabled C compiler (e.g. GCC)
+- OpenMP-enabled C compiler (e.g. GCC or Clang with OpenMP support)
 
 ### Build Cython Modules
 
+Use the `Makefile` to compile for your architecture:
+
 ```bash
-python setup.py build_ext --inplace
+make openmp     # Intel/AMD with OpenMP
+make arm        # Apple Silicon (M1/M2) with OpenMP
+make single     # Single-threaded fallback
 ```
 
-_You will need a `setup.py` file to compile the Cython modules. If you don’t have one, I can generate it for you._
+To clean all build artifacts:
+
+```bash
+make clean
+```
 
 ---
 
@@ -74,15 +91,16 @@ This will:
 
 ## Notes
 
-- The Lennard-Jones simulation is conducted at **300 K** with **σ = 1** and **ε = 1** in reduced units.
-- The code assumes reduced units unless otherwise adapted.
-- Periodic boundary conditions are applied during simulation, but the initial configuration does not consider PBC.
+- The Lennard-Jones simulation uses **reduced units**:  
+  **T = 300 K**, **σ = 1**, **ε = 1**.
+- Periodic boundary conditions are applied during simulation, but the initial configuration does not enforce PBC.
+- The single-threaded version (`montecarlo_lennard_jones_gas_single_thread.pyx`) is provided for platforms lacking OpenMP support.
 
 ---
 
 ## Example Visualization
 
-You can use tools like VMD, PyMOL, or Chimera to visualize the `traj1.pdb` file.
+Use tools like [VMD](https://www.ks.uiuc.edu/Research/vmd/), [PyMOL](https://pymol.org/), or [Chimera](https://www.cgl.ucsf.edu/chimera/) to visualize `traj1.pdb`.
 
 ---
 
@@ -95,4 +113,3 @@ This project is open-source and free to use under the MIT License.
 ## Acknowledgments
 
 This project was inspired by standard examples in computational statistical mechanics and aims to be a stepping stone for more advanced simulation models.
-
