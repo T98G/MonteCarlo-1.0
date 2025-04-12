@@ -15,7 +15,7 @@ def try_import(module_name):
 
 sim_module = None
 if platform.processor() in ("x86_64", "AMD64", "arm64", "aarch64"):
-    sim_module = try_import("montecarlo_lennard_jones_gas_parallel")
+    sim_module = try_import("montecarlo_lennard_jones_gas_OMP")
 if sim_module is None:
     sim_module = try_import("montecarlo_lennard_jones_gas_single_thread")
 if sim_module is None:
