@@ -9,7 +9,7 @@ os.environ["CC"] = "/opt/homebrew/bin/gcc-14"
 os.environ["CXX"] = "/opt/homebrew/bin/g++-14"
 
 ext = Extension(
-    "montecarlo_lennard_jones_gas",
+    "montecarlo_lennard_jones_gas_OMP",
     sources=["montecarlo_lennard_jones_gas_open_mp.pyx"],
     include_dirs=[numpy.get_include()],
     extra_compile_args=["-fopenmp"],
