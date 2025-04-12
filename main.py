@@ -1,6 +1,6 @@
 from generate_box import generate_cubic_box
 from montecarlo_ideal_gas import MonteCarloIdealGas 
-from montecarlo_lennard_jones_gas_parallel import MonteCarloLennardJonesGas
+from montecarlo_lennard_jones_gas import MonteCarloLennardJonesGas
 from matplotlib import pyplot as plt 
 import numpy as np
 
