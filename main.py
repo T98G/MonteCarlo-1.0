@@ -15,7 +15,7 @@ def try_import(module_name):
 
 sim_module = None
 if platform.processor() in ("x86_64", "AMD64", "arm64", "aarch64"):
-    sim_module = try_import("montecarlo_lennard_jones_gas_OMP")
+    sim_module = try_import("montecarlo_lennard_jones_gas_omp")
 if sim_module is None:
     sim_module = try_import("montecarlo_lennard_jones_gas_single_thread")
 if sim_module is None:
@@ -24,10 +24,10 @@ if sim_module is None:
 # Simulation parameters
 box_length = 80.0
 mindist = 4
-nparticles = 900
+nparticles = 500
 atom_name = "O"
 output_file = "test2.pdb"
-totalmoves = 3000
+totalmoves = 30000
 
 box = np.full(3, box_length)
 coordinates = generate_cubic_box(nparticles, box_length, mindist).reshape(nparticles, 3)
@@ -53,6 +53,8 @@ def write_pdb_trajectory(filename, trajectory, box):
 results = sim_module.MonteCarloLennardJonesGas(totalmoves, coordinates, box)
 pressure = results["pressure"]
 traj = results["coordinates"]
+
+np.save("pressure.npy", pressure)
 
 # Output
 write_pdb_trajectory("traj1.pdb", traj, box)
