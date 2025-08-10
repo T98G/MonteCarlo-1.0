@@ -62,9 +62,13 @@ def MonteCarloLennardJonesGas(int totalmoves, cnp.ndarray[cnp.float64_t, ndim=2]
 	cdef cnp.ndarray[cnp.float64_t, ndim=3] traj = np.zeros((totalmoves, N, 3), dtype=np.float64)
 	cdef cnp.ndarray[cnp.float64_t, ndim=1] previous = np.zeros((3), dtype=np.float64)
 
+	converged = False
+
+	conv_limit = 1e-6
+	
 	with tqdm(total=totalmoves) as pbar:
 	
-		while nmoves < totalmoves:
+		while nmoves < totalmoves and not converged:
 
 			dx = np.random.rand()
 			dy = np.random.rand()
@@ -112,6 +116,8 @@ def MonteCarloLennardJonesGas(int totalmoves, cnp.ndarray[cnp.float64_t, ndim=2]
 				system[nparticle, 1] = previous[1]
 				system[nparticle, 2] = previous[2]
 
+			if du <= conv_limit:
+				converged = True
 
 			# Bounding box
 			for i in range(len(box)):
